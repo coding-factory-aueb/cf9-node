@@ -3,11 +3,20 @@ const app = express();
 
 app.use(express.json());
 
+const logger = (req, res, next) => {
+  let url = req.url;
+  console.log("Logger", url);
+  let time = new Date();
+  console.log('Received request for ' + url + ' at ' + time);
+  next();
+
+}
+
 app.get('/user', (req, res)=>{
   res.send("User app");
 })
 
-app.post('/user', (req, res)=>{
+app.post('/user', logger, (req, res)=>{
   console.log(req.body);
   let user = req.body;
   let name = user.name;
